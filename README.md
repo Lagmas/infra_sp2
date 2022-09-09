@@ -7,39 +7,68 @@
 Благодарные или возмущённые пользователи оставляют к произведениям текстовые отзывы (Review) и ставят произведению оценку в диапазоне от одного до десяти (целое число); из пользовательских оценок формируется усреднённая оценка произведения — рейтинг (целое число). На одно произведение пользователь может оставить только один отзыв.
 ## Установка
 
-- Пример заполнения .env(должен находиться в каталоге infra):
+Пример заполнения .env(должен находиться в каталоге infra):
+```
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=%имя базы%
+POSTGRES_USER=%имя пользователя%
+POSTGRES_PASSWORD=%пароль%
+DB_HOST=db
+DB_PORT=%порт(5432 по умолчанию)%
+```
 
-     DB_ENGINE=django.db.backends.postgresql
-     DB_NAME=%имя базы% 
-     POSTGRES_USER=%имя пользователя% 
-     POSTGRES_PASSWORD=%пароль% 
-     DB_HOST=db 
-     DB_PORT=%порт(5432 по умолчанию)% 
+Перейти в папку infra и запустить docker-compose.yaml
+(при установленном и запущенном Docker)
+```
+cd infra_sp2/infra
+docker-compose up
+```
 
-- Перейти в папку infra и запустить docker-compose.yaml (при установленном и запущенном Docker)
- ``` cd infra_sp2/infra  ```
- ``` docker-compose up  ```
+Для пересборки контейнеров выполнять команду:
+(находясь в папке infra, при запущенном Docker)
+```
+docker-compose up -d --build
+```
 
-- Для пересборки контейнеров выполнять команду: (находясь в папке infra, при запущенном Docker)
- ``` docker-compose up -d --build  ```
+В контейнере web выполнить миграции:
 
-- В контейнере web выполнить миграции:
- ```docker-compose exec web python manage.py migrate ```
+```
+docker-compose exec web python manage.py migrate
+```
 
-- Создать суперпользователя:
- ``` docker-compose exec web python manage.py createsuperuser  ```
+Создать суперпользователя:
 
-- Собрать статику:
- ```docker-compose exec web python manage.py collectstatic --no-input ```
-- Заполнение бд из файла фикстур:
- ```docker exec -it %container_id%  python manage.py shell ```
- ```>>> from django.contrib.contenttypes.models import ContentType ```
- ```>>> ContentType.objects.all().delete() ```
- ```>>> quit() ```
- ```docker-compose exec web python manage.py loaddata fixtures.json ```
--Проверьте работоспособность приложения, для этого перейдите на страницу:
-  ```http://localhost/admin/ ```
+```
+docker-compose exec web python manage.py createsuperuser
+```
 
+Собрать статику:
+
+```
+docker-compose exec web python manage.py collectstatic --no-input
+```
+
+Заполнение бд из файла фикстур:
+```
+docker exec -it %container_id%  python manage.py shell
+>>> from django.contrib.contenttypes.models import ContentType
+>>> ContentType.objects.all().delete()
+>>> quit()
+
+docker-compose exec web python manage.py loaddata fixtures.json
+```
+
+Проверьте работоспособность приложения, для этого перейдите на страницу:
+
+```
+ http://localhost/admin/
+```
+
+***Документация*** (запросы для работа с API):
+
+```
+ http://localhost/redoc/
+```
 ## Примеры
 Пользователь аутентифицируется посредством сервиса Simple JWT.
 * Получите код подтверждения регистрации.
