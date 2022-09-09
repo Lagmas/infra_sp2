@@ -12,7 +12,7 @@
 * Установить все необходимые пакеты одной командой: python -m pip install -r requirements.txt. 
 * Выполните миграции python manage.py makemigrations python manage.py migrate 
 * Запустите сервер локально командой: python manage.py runserver 
-* Когда вы запустите проект, по адресу http://127.0.0.1:8000/redoc/ будет доступна документация для API Yatube.
+* Когда вы запустите проект, по адресу http://127.0.0.1/redoc/ будет доступна документация для API Yatube.
 
 ## Загрузка тестовых данных
 В репозитории, в директории /api_yamdb/static/data, находятся несколько файлов в формате csv с контентом для ресурсов Users, Titles, Categories, Genres, Review и Comments.
