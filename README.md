@@ -6,17 +6,42 @@
 Произведению может быть присвоен жанр (Genre) из списка предустановленных (например, «Сказка», «Рок» или «Артхаус»). Новые жанры может создавать только администратор.
 Благодарные или возмущённые пользователи оставляют к произведениям текстовые отзывы (Review) и ставят произведению оценку в диапазоне от одного до десяти (целое число); из пользовательских оценок формируется усреднённая оценка произведения — рейтинг (целое число). На одно произведение пользователь может оставить только один отзыв.
 ## Установка
-Склонируйте проект по адресу https://github.com/Lagmas/api_yamdb.git
 
-* Создайте и активируйте виртуальное окружение python3 -m venv venv source venv/Scripts/activate 
-* Установить все необходимые пакеты одной командой: python -m pip install -r requirements.txt. 
-* Выполните миграции python manage.py makemigrations python manage.py migrate 
-* Запустите сервер локально командой: python manage.py runserver 
-* Когда вы запустите проект, по адресу http://127.0.0.1/redoc/ будет доступна документация для API Yatube.
+Пример заполнения .env(должен находиться в каталоге infra):
+DB_ENGINE=django.db.backends.postgresql
+DB_NAME=%имя базы%
+POSTGRES_USER=%имя пользователя%
+POSTGRES_PASSWORD=%пароль%
+DB_HOST=db
+DB_PORT=%порт(5432 по умолчанию)%
 
-## Загрузка тестовых данных
-В репозитории, в директории /api_yamdb/static/data, находятся несколько файлов в формате csv с контентом для ресурсов Users, Titles, Categories, Genres, Review и Comments.
-Залить данные из файлов csv в БД можно, импортировав данные командой: python manage.py import_csv
+Перейти в папку infra и запустить docker-compose.yaml (при установленном и запущенном Docker)
+cd infra_sp2/infra
+docker-compose up
+
+Для пересборки контейнеров выполнять команду: (находясь в папке infra, при запущенном Docker)
+docker-compose up -d --build
+
+В контейнере web выполнить миграции:
+docker-compose exec web python manage.py migrate
+
+Создать суперпользователя:
+
+docker-compose exec web python manage.py createsuperuser
+Собрать статику:
+
+docker-compose exec web python manage.py collectstatic --no-input
+Заполнение бд из файла фикстур:
+
+docker exec -it %container_id%  python manage.py shell
+>>> from django.contrib.contenttypes.models import ContentType
+>>> ContentType.objects.all().delete()
+>>> quit()
+
+docker-compose exec web python manage.py loaddata fixtures.json
+Проверьте работоспособность приложения, для этого перейдите на страницу:
+
+ http://localhost/admin/
 
 ## Примеры
 Пользователь аутентифицируется посредством сервиса Simple JWT.
