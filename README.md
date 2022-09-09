@@ -8,6 +8,7 @@
 ## Установка
 
 - Пример заполнения .env(должен находиться в каталоге infra):
+
  ``` DB_ENGINE=django.db.backends.postgresql  ```
  ``` DB_NAME=%имя базы%  ```
  ``` POSTGRES_USER=%имя пользователя%  ```
