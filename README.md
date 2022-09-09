@@ -9,12 +9,12 @@
 
 - Пример заполнения .env(должен находиться в каталоге infra):
 
- ``` DB_ENGINE=django.db.backends.postgresql  ```
- ``` DB_NAME=%имя базы%  ```
- ``` POSTGRES_USER=%имя пользователя%  ```
- ``` POSTGRES_PASSWORD=%пароль%  ```
- ``` DB_HOST=db  ```
- ``` DB_PORT=%порт(5432 по умолчанию)%  ```
+ ``` DB_ENGINE=django.db.backends.postgresql
+     DB_NAME=%имя базы% 
+     POSTGRES_USER=%имя пользователя% 
+     POSTGRES_PASSWORD=%пароль% 
+     DB_HOST=db 
+     DB_PORT=%порт(5432 по умолчанию)%  ```
 
 - Перейти в папку infra и запустить docker-compose.yaml (при установленном и запущенном Docker)
  ``` cd infra_sp2/infra  ```
